@@ -40,6 +40,7 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"], optional = tr
 tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
 axum = { version = "0.7" }
 tower = { version = "0.4", features = ["util"] }
+tempfile = "3"
 
 [lib]
 name = "mcp_core"

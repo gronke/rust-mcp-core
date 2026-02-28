@@ -47,7 +47,7 @@ pub mod bootstrap;
 pub use auth::{TokenAuthLayer, TokenAuthService};
 
 #[cfg(feature = "config")]
-pub use config::{generate_random_token, BaseConfig};
+pub use config::{generate_random_token, safe_resolve, BaseConfig, SafePathError};
 
 #[cfg(feature = "transport")]
 pub use transport::{AuthSseServer, SseTransport};

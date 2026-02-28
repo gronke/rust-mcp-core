@@ -1,5 +1,6 @@
 //! Base configuration for MCP and web servers.
 
+use super::safe_path::{safe_resolve, SafePathError};
 use super::token::generate_random_token;
 use std::path::PathBuf;
 
@@ -75,6 +76,14 @@ impl BaseConfig {
     /// Get the socket address for binding.
     pub fn socket_addr(&self) -> String {
         format!("{}:{}", self.host, self.port)
+    }
+
+    /// Safely resolve a user-provided path within the data directory.
+    ///
+    /// Returns the canonicalized path if it stays within [`data_path`](Self::data_path).
+    /// Rejects `..` traversal, absolute paths, and symlinks pointing outside.
+    pub fn resolve_data_path(&self, user_path: &str) -> Result<PathBuf, SafePathError> {
+        safe_resolve(&self.data_path, user_path)
     }
 }
 

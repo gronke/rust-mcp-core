@@ -2,7 +2,7 @@
 //!
 //! This reimplements rmcp's SSE server logic to allow wrapping with auth middleware.
 
-use std::{collections::HashMap, sync::Arc};
+use std::{collections::HashMap, sync::Arc, time::Duration};
 
 use axum::{
     extract::{Query, State},
@@ -190,7 +190,8 @@ async fn sse_handler(
 
     let stream = futures::stream::once(futures::future::ok(endpoint_event)).chain(message_stream);
 
-    Ok(Sse::new(stream))
+    Ok(Sse::new(stream)
+        .keep_alive(axum::response::sse::KeepAlive::new().interval(Duration::from_secs(30))))
 }
 
 /// SSE server that can be wrapped with authentication middleware.
